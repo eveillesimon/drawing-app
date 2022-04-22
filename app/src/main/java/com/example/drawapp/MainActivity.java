@@ -7,14 +7,37 @@ import android.graphics.Path;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    Path path = new Path();
-    int color = Color.YELLOW;
+    private Path path = new Path();
+    private int color = Color.BLACK;
+    private float thickness = 50;
 
+    private int[] button = {R.id.redButton, R.id.greenButton, R.id.blueButton, R.id.yellowButton, R.id.blackButton};
+    private int[] colorButton = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK};
+
+    private void selectButton(int id) {
+        for (int i = 0; i < button.length; i++) {
+            Button b = findViewById(button[i]);
+            if (id == button[i]) {
+                b.setBackgroundColor(colorButton[i]);
+                this.color = colorButton[i];
+            } else {
+                b.setBackgroundColor(Color.GRAY);
+            }
+        }
+    }
+
+    public void setThickness(float thickness) {
+        this.thickness = thickness;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,29 +45,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
-        Path path = new Path();
-        path.moveTo(100, 100);
-        path.lineTo(200, 100);
-        path.lineTo(100, 200);
-        DrawnLine line = new DrawnLine(R.color.black, 10, path);
-        ArrayList<DrawnLine> lines = new ArrayList<>();
-        lines.add(line);
-
         DrawingView drawingView = findViewById(R.id.drawing_view);
-        drawingView.setModel(lines);
-        drawingView.invalidate();
 
+        selectButton(R.id.blackButton);
+
+        for (int i = 0; i < button.length; i++) {
+            int id = button[i];
+            Button b = findViewById(id);
+            b.setOnClickListener(v -> {
+                selectButton(id);
+            });
+        }
+
+        SeekBar seekBar = findViewById(R.id.thickBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChangedValue = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                MainActivity.this.thickness = progressChangedValue;
+            }
+        });
+
+        FloatingActionButton undoButton = findViewById(R.id.undoButton);
+        undoButton.setOnClickListener(v -> {
+                drawingView.undo();
+                drawingView.invalidate();
+                });
 
         drawingView.setOnTouchListener((view, event)->{
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     this.path = new Path();
                     this.path.moveTo(event.getX(), event.getY());
-                    drawingView.addModel(new DrawnLine(this.color, 100, this.path));
+                    drawingView.addModel(new DrawnLine(this.color, this.thickness, this.path));
                     drawingView.invalidate();
                     break;
                 case MotionEvent.ACTION_MOVE:

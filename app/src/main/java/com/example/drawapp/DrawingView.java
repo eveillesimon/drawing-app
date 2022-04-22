@@ -28,6 +28,12 @@ public class DrawingView extends View {
         model.addAll(lines);
     }
 
+    public void undo() {
+        if (model.size() > 0) {
+            model.remove(model.size() - 1);
+        }
+    }
+
     public void addModel(DrawnLine line) {
         model.add(line);
     }
