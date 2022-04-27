@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class DrawingView extends View {
     private Paint paint = new Paint();
-    private ArrayList<DrawnLine> model = new ArrayList<DrawnLine>();
+    private ArrayList<DrawnElement> model = new ArrayList<DrawnElement>();
 
     public void setPaint(int color, float thickness){
         Paint paint = new Paint();
@@ -34,8 +34,8 @@ public class DrawingView extends View {
         }
     }
 
-    public void addModel(DrawnLine line) {
-        model.add(line);
+    public void addModel(DrawnElement shape) {
+        model.add(shape);
     }
 
     public DrawingView(Context context) {
@@ -58,9 +58,9 @@ public class DrawingView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (DrawnLine line : model) {
-            this.setPaint(line.getColor(), line.getThickness());
-            canvas.drawPath(line.getPath(), paint);
+        for (DrawnElement shape : model) {
+            this.setPaint(shape.getColor(), shape.getThickness());
+            canvas.drawPath(shape.getPath(), paint);
         }
     }
 

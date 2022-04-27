@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Red"
-                android:textSize="10sp" />
+                android:textSize="8sp" />
 
             <Button
                 android:id="@+id/greenButton"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Green"
-                android:textSize="10sp" />
+                android:textSize="8sp" />
 
             <Button
                 android:id="@+id/blueButton"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Blue"
-                android:textSize="10sp" />
+                android:textSize="8sp" />
 
             <Button
                 android:id="@+id/yellowButton"
@@ -66,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Yellow"
-                android:textSize="10sp" />
+                android:textSize="8sp"
+                app:iconPadding="4dp" />
 
             <Button
                 android:id="@+id/blackButton"
@@ -74,7 +75,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Black"
-                android:textSize="10sp" />
+                android:textSize="8sp" />
+
+            <Button
+                android:id="@+id/circleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Circle"
+                android:textSize="8sp" />
          </LinearLayout>
 
          <SeekBar

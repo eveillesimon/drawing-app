@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Path path = new Path();
     private int color = Color.BLACK;
     private float thickness = 50;
+    private int mode;
 
     private int[] button = {R.id.redButton, R.id.greenButton, R.id.blueButton, R.id.yellowButton, R.id.blackButton};
     private int[] colorButton = {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.BLACK};
@@ -54,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
             Button b = findViewById(id);
             b.setOnClickListener(v -> {
                 selectButton(id);
+                mode = 1; // mode 1 is for hand drawing
             });
         }
+
+        Button circleButton = findViewById(R.id.circleButton);
+        circleButton.setOnClickListener(v -> {
+            mode = 2; // mode 2 is for circle drawing
+                });
 
         SeekBar seekBar = findViewById(R.id.thickBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -80,17 +87,28 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         drawingView.setOnTouchListener((view, event)->{
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    this.path = new Path();
-                    this.path.moveTo(event.getX(), event.getY());
-                    drawingView.addModel(new DrawnLine(this.color, this.thickness, this.path));
-                    drawingView.invalidate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    this.path.lineTo(event.getX(), event.getY());
-                    drawingView.invalidate();
-                    break;
+            if (mode == 1) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        this.path = new Path();
+                        this.path.moveTo(event.getX(), event.getY());
+                        drawingView.addModel(new DrawnLine(this.color, this.thickness, this.path));
+                        drawingView.invalidate();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        this.path.lineTo(event.getX(), event.getY());
+                        drawingView.invalidate();
+                        break;
+                }
+            } if (mode == 2) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        this.path = new Path();
+                        this.path.addCircle(event.getX(), event.getY(), this.thickness, Path.Direction.CW);
+                        drawingView.addModel(new DrawnCircle(this.color, this.thickness, this.path));
+                        drawingView.invalidate();
+                        break;
+                }
             }
             view.performClick();
             return true;
